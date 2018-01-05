@@ -7,10 +7,13 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="card-background-page" padding>
-  <ion-card *ngFor="let episode of data.episodes">
-    <img [src]="'http://anitubebr.me/'+episode.image"/>
-    <div class="card-title">{{episode.title}}</div>
-    <div class="card-subtitle">41 Listings</div>
-  </ion-card>
+<ion-content class="card-background-page">
+  <ion-list>
+    <button ion-item *ngFor="let episode of data.episodes">
+      <ion-thumbnail item-start [ngStyle]="{'background-image' : 'url(http://anitubebr.me/' + episode.image + ')', 'background-position' : 'center'}">
+       </ion-thumbnail>
+      <h2>{{episode.title}}</h2>
+      <p>Hayao Miyazaki • 1988</p>
+    </button>
+  </ion-list>
 </ion-content>
