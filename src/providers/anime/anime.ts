@@ -4,20 +4,19 @@ import { AppSettings } from '../../app-settings';
 import 'rxjs/add/operator/map';
 
 /*
-  Generated class for the CategoryProvider provider.
+  Generated class for the AnimeProvider provider.
 
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
-
 @Injectable()
-export class CategoryProvider {
+export class AnimeProvider {
 
   constructor(public http: Http, public appSettings: AppSettings) {
   }
 
-  listAll() {
-    return this.http.get(this.appSettings.apiPathCategory).map(res => res.json());
+  listAll(page = 1) {
+    return this.http.get(this.appSettings.apiPathAnime+"/"+page).map(res => res.json());
   }
 
 }

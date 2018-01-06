@@ -7,7 +7,9 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { CategoryPage } from '../pages/category/category';
+import { AnimePage } from '../pages/anime/anime';
+// import { ListPage } from '../pages/list/list';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,12 +17,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AppSettings } from '../app-settings';
 import { CategoryProvider } from '../providers/category/category';
 import { EpisodesProvider } from '../providers/episodes/episodes';
+import { AnimeProvider } from '../providers/anime/anime';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    CategoryPage,
+    AnimePage,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,8 @@ import { EpisodesProvider } from '../providers/episodes/episodes';
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    CategoryPage,
+    AnimePage,
   ],
   providers: [
     StatusBar,
@@ -39,7 +44,8 @@ import { EpisodesProvider } from '../providers/episodes/episodes';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AppSettings,
     CategoryProvider,
-    EpisodesProvider
+    EpisodesProvider,
+    AnimeProvider
   ]
 })
 export class AppModule {}

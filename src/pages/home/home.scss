@@ -1,25 +1,14 @@
-.card-background-page {
+/* .refresher-pulling-icon, .refresher-refreshing-icon {
+  color: #fff;
+}
 
-  ion-card {
-    position: relative;
-    text-align: center;
-  }
+.refresher-refreshing .spinner-ios line, .refresher-refreshing .spinner-ios-small line, .refresher-refreshing .spinner-crescent circle {
+  stroke: #fff;
+}
+*/
 
-  .card-title {
-    position: absolute;
-    top: 36%;
-    font-size: 2.0em;
-    width: 100%;
-    font-weight: bold;
-    color: #fff;
-  }
-
-  .card-subtitle {
-    font-size: 1.0em;
-    position: absolute;
-    top: 52%;
-    width: 100%;
-    color: #fff;
-  }
-
+.card-md {
+	background: white;
+	.item-inner { padding-right: 0 !important; }
+	.label { margin: 0; }
 }

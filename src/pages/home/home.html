@@ -3,17 +3,32 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Lançamentos</ion-title>
+    <ion-title>Últimos Lançamentos</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content class="card-background-page">
-  <ion-list>
-    <button ion-item *ngFor="let episode of data.episodes">
-      <ion-thumbnail item-start [ngStyle]="{'background-image' : 'url(http://anitubebr.me/' + episode.image + ')', 'background-position' : 'center'}">
-       </ion-thumbnail>
-      <h2>{{episode.title}}</h2>
-      <p>Hayao Miyazaki • 1988</p>
+<ion-content>
+  
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card *ngFor="let episode of data.episodes">
+    <button ion-item no-padding no-margin>
+      <img src="http://anitubebr.me/{{episode.image}}"/>
     </button>
-  </ion-list>
+
+    <ion-card-content>
+      <ion-card-title>{{episode.title}}</ion-card-title>
+
+      <ion-item no-padding>
+        <span item-left icon-left>
+          <ion-icon name="timer"></ion-icon> {{episode.duration}}
+        </span>
+        <ion-badge *ngIf="episode.has_hd" clear item-end>HD</ion-badge>
+      </ion-item>
+
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
