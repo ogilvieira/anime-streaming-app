@@ -19,4 +19,12 @@ export class AnimeProvider {
     return this.http.get(this.appSettings.apiPathAnime+"/"+page).map(res => res.json());
   }
 
+  get(slug = "") {
+    return this.http.get(this.appSettings.apiPathAnime+"/detail/"+slug).map(res => res.json());
+  }
+
+  getByAnime(slug = "", page = 1){
+    return this.http.get(this.appSettings.apiPathAnime+"/episodes/"+slug+"/"+page).map(res => res.json());
+  }
+
 }

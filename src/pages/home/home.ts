@@ -1,56 +1,63 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, ModalController } from 'ionic-angular';
 import { EpisodesProvider } from '../../providers/episodes/episodes';
+import { Storage } from '@ionic/storage';
+import { AnimeDetailPage } from '../../pages/anime-detail/anime-detail';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-	data: any;
-  nextPage: number = 1;
+	data: any = [];
 
-
-  constructor(public navCtrl: NavController, public episodesProvider: EpisodesProvider, public loadingCtrl: LoadingController) {
-    this.data = {
-      episodes: []
-    };
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public storage: Storage, public modalCtrl: ModalController) {
 
     this.loader.present();
     
     let _self = this;
+    storage.get('favorites').then(function(val){
+      console.log(val);
+      if( val ){
+        val = JSON.parse(val);
+        console.log(val.length);
+        
+        let i = 0;
+        let getAnime = function(){
+          let e = val.pop();
 
-    this.getEpisodes(function(res){
-      _self.loader.dismiss();
-      res.episodes.map((a) => {
-        _self.data.episodes.push(a);
-      })
-      _self.nextPage = res.nextPage;
-      console.log(_self.nextPage);
+          _self.storage.get(e).then((v) => {
+            
+            if(v){ _self.data.push(JSON.parse(v)); }
+            if( i < (val.length-1)){
+              i++;
+              getAnime();
+            } else {
+              console.log( _self.data );
+              _self.loader.dismiss();
+              return;
+            }
+
+          });
+        };
+
+        getAnime(i);
+
+      } else {
+        _self.storage.set('favorites', JSON.stringify([])).then(function(val){
+          _self.loader.dismiss();
+        });
+      }
     });
   }
-
-  getEpisodes(callback){
-    this.episodesProvider.listAll()
-      .subscribe( res => {
-        callback(res);
-      });
-  };
 
   loader = this.loadingCtrl.create({
     content: "Carregando...",
   });
 
-  doRefresh(e){
-    let _self = this;
-
-    this.getEpisodes(function(res){
-      e.complete();
-      _self.data.episodes = res.episodes;
-      _self.nextPage = 2;
-    });
+  openAnime(slug, title = "d"){
+    console.log(slug);
+    let profileModal = this.modalCtrl.create(AnimeDetailPage, { slug: slug, title: title });
+    profileModal.present();
   }
-
-
-
 }

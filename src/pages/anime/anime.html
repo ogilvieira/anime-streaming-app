@@ -10,19 +10,28 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Animes</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="getAndSaveAnimes()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  
-  <ion-list>
-    <button ion-item *ngFor="let anime of data.animes">
-      {{anime.title}}
-      <ion-badge item-end>{{anime.episodes}}</ion-badge>
+
+  <ion-searchbar *ngIf="complete" (ionInput)="getSearch($event)"></ion-searchbar>
+
+  <ion-list *ngIf="complete && isSearch" padding>
+    <button ion-item *ngFor="let item of searchItems" no-padding (click)="openAnime(item.slug, item.title)">
+      {{item.title}}
+      <ion-badge item-end>{{item.episodes}}</ion-badge>
     </button>
   </ion-list>
 
-	<ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-	   <ion-infinite-scroll-content></ion-infinite-scroll-content>
-	 </ion-infinite-scroll>
+  <ion-list *ngIf="complete && !isSearch" padding>
+    <button ion-item *ngFor="let anime of data.animes" no-padding (click)="openAnime(anime.slug, anime.title)">
+      {{anime.title}}
+    </button>
+  </ion-list>
 </ion-content>

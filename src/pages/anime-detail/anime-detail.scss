@@ -1,0 +1,12 @@
+page-anime-detail {
+	.card-md { 
+		width: 100%; 
+		padding-bottom: 70px;
+		box-shadow: none;
+	}
+	.card-md .item-md.item-block .item-inner,
+	.list-md .item-block .item-inner {
+	    border-bottom: 1px solid #dedede;
+	}
+	.item-md { padding-left: 0; }
+}

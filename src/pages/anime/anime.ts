@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, ModalController } from 'ionic-angular';
 import { AnimeProvider } from '../../providers/anime/anime';
-
+import { Storage } from '@ionic/storage';
+import { AnimeDetailPage } from '../../pages/anime-detail/anime-detail';
 /**
  * Generated class for the AnimePage page.
  *
@@ -15,47 +16,99 @@ import { AnimeProvider } from '../../providers/anime/anime';
 })
 export class AnimePage {
   data: any;
+  complete: boolean = false;
+  isSearch: boolean = false;
+  searchItems: any = [];
+  is_favorite: boolean = false;
 
-  constructor(public navCtrl: NavController, public animeProvider: AnimeProvider, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public animeProvider: AnimeProvider, public loadingCtrl: LoadingController, private storage: Storage, public modalCtrl: ModalController) {
     this.data = {
       animes: [],
-      nextPage: 4,
+      nextPage: 1,
+      err: false,
+      errMsg: "",
     };
 
-    this.loader.present();
+
     var _self = this;
 
-    this.getAnimes(function(){
-    	_self.loader.dismiss();
+    storage.get('animes').then((val) => {
+      if(val){
+        val = JSON.parse(val);
+        let weekDiff = new Date(val.update_at + 7 * 24 * 60 * 60 * 1000);
+        
+        if(val.update_at > weekDiff){
+          this.getAndSaveAnimes();
+          return;          
+        }
+
+        _self.data.animes = val.data;
+        _self.complete = true;
+        return;
+      }
+      this.getAndSaveAnimes();
     });
   }
 
-  loader = this.loadingCtrl.create({
-    content: "Carregando...",
-  });
+  getAndSaveAnimes = function(){
+    let _self = this;
+
+    this.data.animes = [];
+    this.data.nextPage = 1;
+    this.data.err = false;
+    this.complete = false;
+
+    let loader = this.loadingCtrl.create({
+      content: "Carregando...",
+    });
+
+    loader.present();
+
+    this.getAnimes(function(res){
+      let now = ( new Date().getTime() );
+      _self.storage.set('animes', JSON.stringify({update_at: now, data: _self.data.animes}));
+      _self.complete = true;
+      loader.dismiss();
+    });
+  };
 
   getAnimes(callback){
 
     this.animeProvider.listAll( this.data.nextPage )
       .subscribe( res => {
-      	
+         if(res.err){ return callback(res); };
+
       	 res.animes.map((a) => {
       	 	this.data.animes.push(a);
       	 });
 
       	this.data.nextPage = res.nextPage;
-      	callback();
+
+        if( !this.data.nextPage ){
+          this.complete = true;
+          callback(res);
+          return;
+        }
+        
+        this.getAnimes(callback);
+ 
       });
   }
 
-  doInfinite(e){
-  	if(!this.data.nextPage){ 
-  		e.complete();
-  		return;
-  	}
-  	this.getAnimes(function(){
-  		e.complete();
-  	})
+  getSearch(e: any){
+    let query = e.target.value || '';
+    this.isSearch = (query.length > 0);
+
+    if (query && query.trim() != '') {
+      this.searchItems = this.data.animes.filter((item) => {
+        return (item.title.toLowerCase().indexOf(query.toLowerCase()) > -1);
+      })
+    }
+  }
+
+  openAnime(slug, title){
+    let profileModal = this.modalCtrl.create(AnimeDetailPage, { slug: slug, title: title });
+    profileModal.present();
   }
 
 }
