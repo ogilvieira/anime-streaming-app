@@ -20,7 +20,7 @@ export class AnimeDetailPage {
   slug: string = '';
   data: any;
   loaded: boolean = false;
-  isSetFavorite: false;
+  isSetFavorite: boolean = false;
   episodes: any = [];
   episodesLoaded: boolean = false;
   is_favorite: boolean = false;
@@ -75,7 +75,7 @@ export class AnimeDetailPage {
     let _self = this;
 
     this.storage.get('anime_'+this.slug).then((val) => {
-      
+
       if( val ){
         _self.is_favorite = false;
         _self.storage.remove('anime_'+_self.slug);
@@ -103,12 +103,12 @@ export class AnimeDetailPage {
 
 
     });
-    
+
   };
 
   doInfinite(e){
     let _self = this;
-    if(!this.episodesLoaded || !this.episodesNextPage){ 
+    if(!this.episodesLoaded || !this.episodesNextPage){
       e.complete();
       return;
     }
