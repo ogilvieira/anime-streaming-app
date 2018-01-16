@@ -22,6 +22,7 @@ import { CategoryProvider } from '../providers/category/category';
 import { EpisodesProvider } from '../providers/episodes/episodes';
 import { AnimeProvider } from '../providers/anime/anime';
 import { VideoPlayer } from '@ionic-native/video-player';
+import { StreamingMedia } from '@ionic-native/streaming-media';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { VideoPlayer } from '@ionic-native/video-player';
     CategoryProvider,
     EpisodesProvider,
     AnimeProvider,
-    VideoPlayer
+    VideoPlayer,
+    StreamingMedia
   ]
 })
 export class AppModule {}

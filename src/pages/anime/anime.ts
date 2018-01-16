@@ -20,6 +20,7 @@ export class AnimePage {
   isSearch: boolean = false;
   searchItems: any = [];
   is_favorite: boolean = false;
+  loader: any;
 
   constructor(public navCtrl: NavController, public animeProvider: AnimeProvider, public loadingCtrl: LoadingController, private storage: Storage, public modalCtrl: ModalController) {
     this.data = {
@@ -29,21 +30,27 @@ export class AnimePage {
       errMsg: "",
     };
 
+    let _self = this;
 
-    var _self = this;
+    this.loader = this.loadingCtrl.create({
+      content: "Carregando...",
+    });
+
+    this.loader.present();
 
     storage.get('animes').then((val) => {
       if(val){
         val = JSON.parse(val);
         let weekDiff = new Date(val.update_at + 7 * 24 * 60 * 60 * 1000);
-        
+
         if(val.update_at > weekDiff){
           this.getAndSaveAnimes();
-          return;          
+          return;
         }
 
         _self.data.animes = val.data;
         _self.complete = true;
+        _self.loader.dismiss();
         return;
       }
       this.getAndSaveAnimes();
@@ -57,18 +64,11 @@ export class AnimePage {
     this.data.nextPage = 1;
     this.data.err = false;
     this.complete = false;
-
-    let loader = this.loadingCtrl.create({
-      content: "Carregando...",
-    });
-
-    loader.present();
-
     this.getAnimes(function(res){
       let now = ( new Date().getTime() );
       _self.storage.set('animes', JSON.stringify({update_at: now, data: _self.data.animes}));
       _self.complete = true;
-      loader.dismiss();
+      _self.loader.dismiss();
     });
   };
 
@@ -89,9 +89,9 @@ export class AnimePage {
           callback(res);
           return;
         }
-        
+
         this.getAnimes(callback);
- 
+
       });
   }
 

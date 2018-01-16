@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, ViewController, LoadingController 
 import { Storage } from '@ionic/storage';
 import { AnimeProvider } from '../../providers/anime/anime';
 import { EpisodesProvider } from '../../providers/episodes/episodes';
-import { VideoPlayer } from '@ionic-native/video-player';
+import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
 
 /**
  * Generated class for the AnimeDetailPage page.
@@ -28,9 +28,14 @@ export class AnimeDetailPage {
   is_favorite: boolean = false;
   episodesNextPage: any = 1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public animeProvider: AnimeProvider, public loadingCtrl: LoadingController, private storage: Storage, public episodesProvider: EpisodesProvider, private videoPlayer: VideoPlayer) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public animeProvider: AnimeProvider, public loadingCtrl: LoadingController, private storage: Storage, public episodesProvider: EpisodesProvider, private streamingMedia: StreamingMedia) {
     this.titleHeader = this.navParams.get('title');
     this.slug = this.navParams.get('slug');
+
+    let loader = this.loadingCtrl.create({
+      content: "Carregando...",
+    });
+    loader.present();
 
     storage.get('anime_'+this.slug).then((val) => {
       if(val){
@@ -53,6 +58,8 @@ export class AnimeDetailPage {
             this.episodes = res.episodes;
             this.episodesLoaded = true;
             this.episodesNextPage = res.nextPage;
+
+            loader.dismiss();
           });
       });
   }
@@ -109,12 +116,21 @@ export class AnimeDetailPage {
   };
 
   playVideo( videoArr = []) {
-    // Playing a video.
-    this.videoPlayer.play( videoArr[0] ).then(() => {
-     console.log('video completed');
-    }).catch(err => {
-     console.log(err);
-    });
+
+    let options: StreamingVideoOptions = {
+      successCallback: () => { console.log('Finished Video') },
+      errorCallback: (e) => { console.log('Error: ', e) },
+      orientation: 'landscape'
+    };
+
+    this.streamingMedia.playVideo(videoArr[videoArr.length-1], options);
+
+    // // Playing a video.
+    // this.videoPlayer.play( videoArr[0] ).then(() => {
+    //  console.log('video completed');
+    // }).catch(err => {
+    //  console.log(err);
+    // });
   }
 
   getVideo( key = '' ){
