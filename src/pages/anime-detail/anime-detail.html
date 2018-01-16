@@ -25,19 +25,19 @@
 <ion-card *ngIf="loaded" no-margin>
   <img src="{{data.image}}"/>
   <ion-card-content>
-  <ion-icon name="calendar"></ion-icon> {{data.year}} &nbsp;&nbsp; <ion-icon name="person"></ion-icon> {{data.author}} 
+  <ion-icon name="calendar"></ion-icon> {{data.year}} &nbsp;&nbsp; <ion-icon name="person"></ion-icon> {{data.author}}
   <hr/>
     <p>
       {{data.description}}
     </p>
     <hr>
 	<ion-list *ngIf="episodesLoaded" no-padding>
-	  <button ion-item *ngFor="let episode of episodes">
+	  <button ion-item *ngFor="let episode of episodes" (click)="getVideo(episode.key)">
 	    <ion-thumbnail item-start>
 	      <img src="{{ episode.image }}">
 	    </ion-thumbnail>
 	    <h2><ion-badge *ngIf="episode.has_hd" clear item-end>HD</ion-badge> {{episode.title}}</h2>
-	    <p>        
+	    <p>
 		    <span item-left icon-left>
 	          <ion-icon name="timer"></ion-icon> {{episode.duration}}
 	        </span>
@@ -46,8 +46,8 @@
 	</ion-list>
   </ion-card-content>
 </ion-card>
-  
+
 <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
   <ion-infinite-scroll-content></ion-infinite-scroll-content>
-</ion-infinite-scroll> 
+</ion-infinite-scroll>
 </ion-content>

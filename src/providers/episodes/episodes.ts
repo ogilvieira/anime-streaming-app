@@ -19,6 +19,10 @@ export class EpisodesProvider {
   }
 
   listAll() {
-	return this.http.get(this.appSettings.apiPathEpisodes).map(res => res.json());
+    return this.http.get(this.appSettings.apiPathEpisodes).map(res => res.json());
+  }
+
+  getVideos(key = '') {
+  	return this.http.get(this.appSettings.apiPathVideos+'/'+key).map(res => res.json());
   }
 }

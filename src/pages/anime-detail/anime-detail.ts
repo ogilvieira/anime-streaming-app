@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnimeProvider } from '../../providers/anime/anime';
+import { EpisodesProvider } from '../../providers/episodes/episodes';
+import { VideoPlayer } from '@ionic-native/video-player';
 
 /**
  * Generated class for the AnimeDetailPage page.
@@ -26,7 +28,7 @@ export class AnimeDetailPage {
   is_favorite: boolean = false;
   episodesNextPage: any = 1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public animeProvider: AnimeProvider, public loadingCtrl: LoadingController, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public animeProvider: AnimeProvider, public loadingCtrl: LoadingController, private storage: Storage, public episodesProvider: EpisodesProvider, private videoPlayer: VideoPlayer) {
     this.titleHeader = this.navParams.get('title');
     this.slug = this.navParams.get('slug');
 
@@ -104,6 +106,32 @@ export class AnimeDetailPage {
 
     });
 
+  };
+
+  playVideo( videoArr = []) {
+    // Playing a video.
+    this.videoPlayer.play( videoArr[0] ).then(() => {
+     console.log('video completed');
+    }).catch(err => {
+     console.log(err);
+    });
+  }
+
+  getVideo( key = '' ){
+    let _self = this;
+
+    console.log("CARREGA DADOS DO VIDEO");
+    let loader = this.loadingCtrl.create({
+      content: "Carregando...",
+    });
+
+    loader.present();
+    this.episodesProvider.getVideos(key)
+      .subscribe( res => {
+        console.log(res);
+        _self.playVideo(res);
+        loader.dismiss();
+      });
   };
 
   doInfinite(e){

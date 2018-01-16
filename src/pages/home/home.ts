@@ -14,22 +14,26 @@ export class HomePage {
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public storage: Storage, public modalCtrl: ModalController) {
 
     this.loader.present();
-    
+
     let _self = this;
     storage.get('favorites').then(function(val){
       console.log(val);
       if( val ){
         val = JSON.parse(val);
+
         console.log(val.length);
-        
+
         let i = 0;
         let getAnime = function(){
           let e = val.pop();
 
+          console.log(e);
+
           _self.storage.get(e).then((v) => {
-            
+
             if(v){ _self.data.push(JSON.parse(v)); }
-            if( i < (val.length-1)){
+
+            if( val.length > 0 ){
               i++;
               getAnime();
             } else {
@@ -41,7 +45,7 @@ export class HomePage {
           });
         };
 
-        getAnime(i);
+        getAnime();
 
       } else {
         _self.storage.set('favorites', JSON.stringify([])).then(function(val){

@@ -9,13 +9,13 @@
 
 <ion-content padding>
   <p></p>Você ainda não tem nenhum anime na sua lista.
-	
+
 	<ion-list *ngIf="data.length" no-padding>
 	  <button ion-item *ngFor="let anime of data" (click)="openAnime(anime.data.slug, anime.data.title)">
 	    <ion-thumbnail item-start>
 	      <img src="{{ anime.data.image }}">
 	    </ion-thumbnail>
-	    <h2>{{anime.data.slug}}</h2>
+	    <h2>{{anime.data.title}}</h2>
 	    <p>
 	    	{{anime.data.description}}
         <p>

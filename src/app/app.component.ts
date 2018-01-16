@@ -25,9 +25,7 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Meus animes', component: HomePage },
-      { title: 'Últimos Lançamentos', component: NewEpisodesPage },
-      { title: 'Categorias', component: CategoryPage },
-      { title: 'Animes', component: AnimePage },
+      { title: 'Lista de Animes', component: AnimePage },
     ];
 
   }
