@@ -107,8 +107,9 @@ export class AnimePage {
   }
 
   openAnime(slug, title){
-    let profileModal = this.modalCtrl.create(AnimeDetailPage, { slug: slug, title: title });
-    profileModal.present();
+    this.navCtrl.push(AnimeDetailPage, { slug: slug, title: title });
+    // let profileModal = this.modalCtrl.create(AnimeDetailPage, { slug: slug, title: title });
+    // profileModal.present();
   }
 
 }

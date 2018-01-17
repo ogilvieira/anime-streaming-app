@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnimeProvider } from '../../providers/anime/anime';
+import { HomePage } from '../../pages/home/home';
 import { EpisodesProvider } from '../../providers/episodes/episodes';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
 
@@ -148,6 +149,10 @@ export class AnimeDetailPage {
         _self.playVideo(res);
         loader.dismiss();
       });
+  };
+
+  goMyAnimes(){
+    this.navCtrl.setRoot(HomePage);
   };
 
   doInfinite(e){

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController, ModalController } from 'ionic-angular';
-import { EpisodesProvider } from '../../providers/episodes/episodes';
 import { Storage } from '@ionic/storage';
 import { AnimeDetailPage } from '../../pages/anime-detail/anime-detail';
+import { AnimePage } from '../../pages/anime/anime';
 
 @Component({
   selector: 'page-home',
@@ -59,9 +59,11 @@ export class HomePage {
     content: "Carregando...",
   });
 
-  openAnime(slug, title = "d"){
-    console.log(slug);
-    let profileModal = this.modalCtrl.create(AnimeDetailPage, { slug: slug, title: title });
-    profileModal.present();
+  openAnime(slug, title = ""){
+    this.navCtrl.setRoot(AnimeDetailPage, { slug: slug, title: title });
+  }
+
+  goToList() {
+    this.navCtrl.setRoot(AnimePage);
   }
 }

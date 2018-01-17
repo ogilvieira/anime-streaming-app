@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content padding>
-  <p></p>Você ainda não tem nenhum anime na sua lista.
+  <p *ngIf="!data.length">Você ainda não tem nenhum anime na sua lista.</p>
 
 	<ion-list *ngIf="data.length" no-padding>
 	  <button ion-item *ngFor="let anime of data" (click)="openAnime(anime.data.slug, anime.data.title)">
@@ -22,6 +22,6 @@
 	  </button>
 	</ion-list>
 
-  <button ion-button full>Adicionar</button>
+  <button ion-button full (click)="goToList()">Adicionar</button>
 
 </ion-content>

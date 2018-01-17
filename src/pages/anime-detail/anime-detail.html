@@ -15,11 +15,17 @@
 
 <ion-content>
 
+<ion-fab bottom left>
+  <button ion-fab (click)="goMyAnimes()">
+    <ion-icon name="arrow-back"></ion-icon>
+  </button>
+</ion-fab>
+
 <ion-fab bottom right>
-    <button ion-fab mini (click)="toggleFavorite()">
-      <ion-icon name="star" *ngIf="is_favorite"></ion-icon>
-      <ion-icon name="star-outline" *ngIf="!is_favorite"></ion-icon>
-    </button>
+  <button ion-fab (click)="toggleFavorite()">
+    <ion-icon name="star" *ngIf="is_favorite"></ion-icon>
+    <ion-icon name="star-outline" *ngIf="!is_favorite"></ion-icon>
+  </button>
 </ion-fab>
 
 <ion-card *ngIf="loaded" no-margin>
